@@ -13,14 +13,14 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package com.example.android.camera2basic.tests;
+package com.example.android.that.tests;
 
-import com.example.android.camera2basic.*;
+import com.example.android.that.*;
 
 import android.test.ActivityInstrumentationTestCase2;
 
 /**
-* Tests for Camera2Basic sample.
+* Tests for that sample.
 */
 public class SampleTests extends ActivityInstrumentationTestCase2<CameraActivity> {
 
