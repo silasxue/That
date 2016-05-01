@@ -13,11 +13,11 @@
 * See the License for the specific language governing permissions and
 * limitations under the License.
 */
-package com.example.android.that.tests;
-
-import com.example.android.that.*;
+package com.n2chao.that.tests;
 
 import android.test.ActivityInstrumentationTestCase2;
+
+import com.n2chao.that.CameraActivity;
 
 /**
 * Tests for that sample.

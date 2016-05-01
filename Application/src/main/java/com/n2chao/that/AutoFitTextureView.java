@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.android.that;
+package com.n2chao.that;
 
 import android.content.Context;
 import android.util.AttributeSet;

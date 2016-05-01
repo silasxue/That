@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.android.that;
+package com.n2chao.that;
 
 import android.Manifest;
 import android.app.Activity;
@@ -177,7 +177,7 @@ public class CameraFragment extends Fragment
     private CameraDevice mCameraDevice;
 
     /**
-     * The {@link android.util.Size} of camera preview.
+     * The {@link Size} of camera preview.
      */
     private Size mPreviewSize;
 
@@ -433,6 +433,7 @@ public class CameraFragment extends Fragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        //mFile = new File(getActivity().getFilesDir() + File.separator + "pic.jpg");
         mFile = new File(getActivity().getExternalFilesDir(null), "pic.jpg");
     }
 
@@ -507,10 +508,9 @@ public class CameraFragment extends Fragment
                     continue;
                 }
 
-                // For still image captures, we use the largest available size.
-                Size largest = Collections.max(
-                        Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)),
-                        new CompareSizesByArea());
+                //Choose a medium quality resolution
+                Size [] array = map.getOutputSizes(ImageFormat.JPEG);
+                Size largest = array[array.length/2];
                 mImageReader = ImageReader.newInstance(largest.getWidth(), largest.getHeight(),
                         ImageFormat.JPEG, /*maxImages*/2);
                 mImageReader.setOnImageAvailableListener(
@@ -729,7 +729,7 @@ public class CameraFragment extends Fragment
     }
 
     /**
-     * Configures the necessary {@link android.graphics.Matrix} transformation to `mTextureView`.
+     * Configures the necessary {@link Matrix} transformation to `mTextureView`.
      * This method should be called after the camera preview size is determined in
      * setUpCameraOutputs and also the size of `mTextureView` is fixed.
      *
