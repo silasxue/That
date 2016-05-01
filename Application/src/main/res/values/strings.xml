@@ -16,7 +16,7 @@
 -->
 <resources>
     <string name="app_name">That</string>
-    <string name="picture">Snap</string>
+    <string name="picture"></string>
     <string name="request_permission">Camera permission needed.</string>
     <string name="camera_error">This device doesn\'t support Camera2 API.</string><string name="intro_message">
         <![CDATA[
