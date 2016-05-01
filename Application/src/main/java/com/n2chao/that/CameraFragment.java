@@ -75,6 +75,12 @@ public class CameraFragment extends Fragment
         implements View.OnClickListener, FragmentCompat.OnRequestPermissionsResultCallback {
 
     /**
+     * Clarifai information
+     */
+    //private static final String CLIENT_ID = BuildConfig.CLIENT_ID;
+    //private static final String CLIENT_SECRET = BuildConfig.CLIENT_SECRET;
+
+    /**
      * Conversion from screen rotation to JPEG orientation.
      */
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();

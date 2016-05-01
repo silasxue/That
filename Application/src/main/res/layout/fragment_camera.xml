@@ -34,7 +34,7 @@
         android:background="@color/control_background">
 
         <HorizontalScrollView
-            android:layout_width="264dp"
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:scrollbars="none">
