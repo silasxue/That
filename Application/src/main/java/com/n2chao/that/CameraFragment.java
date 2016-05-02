@@ -71,14 +71,23 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+import com.clarifai.api.ClarifaiClient;
+import com.clarifai.api.RecognitionRequest;
+import com.clarifai.api.RecognitionResult;
+import com.clarifai.api.Tag;
+import com.clarifai.api.exception.ClarifaiException;
+
 public class CameraFragment extends Fragment
         implements View.OnClickListener, FragmentCompat.OnRequestPermissionsResultCallback {
 
     /**
      * Clarifai information
      */
-    //private static final String CLIENT_ID = BuildConfig.CLIENT_ID;
-    //private static final String CLIENT_SECRET = BuildConfig.CLIENT_SECRET;
+    //private final String CLIENT_ID = getResources().getString(R.string.CLIENT_ID);
+    //private final String CLIENT_SECRET = getResources().getString(R.string.CLIENT_SECRET);
+    private static String client_id;
+    private static String client_secret;
+    private static ClarifaiClient client;
 
     /**
      * Conversion from screen rotation to JPEG orientation.
@@ -198,6 +207,7 @@ public class CameraFragment extends Fragment
             mCameraOpenCloseLock.release();
             mCameraDevice = cameraDevice;
             createCameraPreviewSession();
+            setClarifai();
         }
 
         @Override
@@ -903,7 +913,7 @@ public class CameraFragment extends Fragment
     /**
      * Saves a JPEG {@link Image} into the specified {@link File}.
      */
-    private static class ImageSaver implements Runnable {
+    private class ImageSaver implements Runnable {
 
         /**
          * The JPEG image
@@ -919,6 +929,29 @@ public class CameraFragment extends Fragment
             mFile = file;
         }
 
+        /**
+         * Send request to Clarifai
+         */
+        private void clarifaiRequest(byte[] bytes){
+            RecognitionResult result = client.recognize(new RecognitionRequest(bytes)).get(0);
+
+            if (result != null) {
+                if (result.getStatusCode() == RecognitionResult.StatusCode.OK) {
+                    // Display the list of tags in the UI.
+                    StringBuilder b = new StringBuilder();
+                    for (Tag tag : result.getTags()) {
+                        b.append(b.length() > 0 ? ", " : "").append(tag.getName());
+                    }
+                    showToast("Tags:\n" + b);
+                } else {
+                    Log.e(TAG, "Clarifai: " + result.getStatusMessage());
+                    showToast("Sorry, there was an error recognizing your image.");
+                }
+            } else {
+                showToast("Sorry, there was an error recognizing your image.");
+            }
+        }
+
         @Override
         public void run() {
             ByteBuffer buffer = mImage.getPlanes()[0].getBuffer();
@@ -928,6 +961,7 @@ public class CameraFragment extends Fragment
             try {
                 output = new FileOutputStream(mFile);
                 output.write(bytes);
+                clarifaiRequest(bytes);
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
@@ -941,6 +975,22 @@ public class CameraFragment extends Fragment
                 }
             }
         }
+
+    }
+
+    /**
+     * Set Clarifai id and secret
+     */
+    private void setClarifai(){
+        client_id = getString(R.string.CLIENT_ID);
+        client_secret = getString(R.string.CLIENT_SECRET);
+        client = new ClarifaiClient(client_id, client_secret);
+    }
+
+    /**
+     * Display Clarifai results
+     */
+    private void displayResults(){
 
     }
 
