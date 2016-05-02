@@ -17,5 +17,5 @@
 -->
 <resources>
     <color name="control_background">#E0E0E0</color>
-    <color name="results_color">#FF8F00</color>
+    <color name="results_color">#FF6F00</color>
 </resources>

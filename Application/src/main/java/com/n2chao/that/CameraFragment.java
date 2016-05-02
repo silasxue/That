@@ -461,8 +461,7 @@ public class CameraFragment extends Fragment
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        //mFile = new File(getActivity().getFilesDir() + File.separator + "pic.jpg");
-        mFile = new File(getActivity().getExternalFilesDir(null), "pic.jpg");
+        mFile = new File(getActivity().getExternalFilesDir(null), "input.jpg");
     }
 
     @Override
@@ -912,6 +911,15 @@ public class CameraFragment extends Fragment
 
     @Override
     public void onClick(View view) {
+        final Activity activity = getActivity();
+        if (activity != null) {
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    results_id.setText(R.string.camera_press);
+                }
+            });
+        }
         takePicture();
     }
 
@@ -966,10 +974,10 @@ public class CameraFragment extends Fragment
 
                 } else {
                     Log.e(TAG, "Clarifai: " + clarifaiResults.getStatusMessage());
-                    showToast("Sorry, there was an error recognizing your image.");
+                    showToast("Sorry, there was an error recognizing this thing.");
                 }
             } else {
-                showToast("Sorry, there was an error recognizing your image.");
+                showToast("Sorry, there was an error recognizing this thing.");
             }
         }
 
