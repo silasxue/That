@@ -20,14 +20,6 @@
     <string name="picture"></string>
     <string name="request_permission">Camera permission needed.</string>
     <string name="camera_press">Recognizing...</string>
-    <string name="camera_error">This device doesn\'t support Camera2 API.</string><string name="intro_message">
-        <![CDATA[
-
-
-            Hi
-
-
-        ]]>
-    </string>
+    <string name="camera_error">This device doesn\'t support Camera2 API.</string>
 
 </resources>
