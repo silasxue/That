@@ -57,6 +57,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -88,6 +89,15 @@ public class CameraFragment extends Fragment
     private static String client_id;
     private static String client_secret;
     private static ClarifaiClient client;
+
+    /**
+     * Class level view to change the text
+     */
+    private static View inflatedView;
+    /**
+     * TextView for the results
+     */
+    private static TextView results_id;
 
     /**
      * Conversion from screen rotation to JPEG orientation.
@@ -437,7 +447,9 @@ public class CameraFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_camera, container, false);
+        inflatedView = inflater.inflate(R.layout.fragment_camera, container,false);
+        results_id = (TextView) inflatedView.findViewById(R.id.results);
+        return inflatedView;
     }
 
     @Override
@@ -850,7 +862,7 @@ public class CameraFragment extends Fragment
                 public void onCaptureCompleted(@NonNull CameraCaptureSession session,
                                                @NonNull CaptureRequest request,
                                                @NonNull TotalCaptureResult result) {
-                    showToast("Saved: " + mFile);
+                    //showToast("Saved: " + mFile);
                     Log.d(TAG, mFile.toString());
                     unlockFocus();
                 }
@@ -933,18 +945,27 @@ public class CameraFragment extends Fragment
          * Send request to Clarifai
          */
         private void clarifaiRequest(byte[] bytes){
-            RecognitionResult result = client.recognize(new RecognitionRequest(bytes)).get(0);
+            RecognitionResult clarifaiResults = client.recognize(new RecognitionRequest(bytes)).get(0);
 
-            if (result != null) {
-                if (result.getStatusCode() == RecognitionResult.StatusCode.OK) {
+            if (clarifaiResults != null) {
+                if (clarifaiResults.getStatusCode() == RecognitionResult.StatusCode.OK) {
                     // Display the list of tags in the UI.
-                    StringBuilder b = new StringBuilder();
-                    for (Tag tag : result.getTags()) {
-                        b.append(b.length() > 0 ? ", " : "").append(tag.getName());
+                    final StringBuilder listResults = new StringBuilder();
+                    for (Tag tag : clarifaiResults.getTags()) {
+                        listResults.append(listResults.length() > 0 ? ", " : "").append(tag.getName());
                     }
-                    showToast("Tags:\n" + b);
+                    final Activity activity = getActivity();
+                    if (activity != null) {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                results_id.setText(listResults);
+                            }
+                        });
+                    }
+
                 } else {
-                    Log.e(TAG, "Clarifai: " + result.getStatusMessage());
+                    Log.e(TAG, "Clarifai: " + clarifaiResults.getStatusMessage());
                     showToast("Sorry, there was an error recognizing your image.");
                 }
             } else {

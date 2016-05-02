@@ -44,7 +44,8 @@
                 android:layout_height="wrap_content"
                 android:scrollHorizontally="true"
                 android:textColor="@color/results_color"
-                android:text="Touch something to inspect"/>
+                android:text="Touch something to inspect"
+                android:id="@+id/results" />
 
         </HorizontalScrollView>
 
