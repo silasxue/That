@@ -12,3 +12,5 @@ When you get those, add them to the strings.xml file as
   \<string name="CLIENT_SECRET">YOUR_SECRET_HERE\</string>
   
 and you should be good to go.
+
+Cool loading animation from https://github.com/81813780/AVLoadingIndicatorView
