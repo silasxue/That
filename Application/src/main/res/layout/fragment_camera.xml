@@ -33,22 +33,19 @@
         android:layout_alignParentStart="true"
         android:background="@color/control_background">
 
-        <HorizontalScrollView
-            android:layout_width="280dp"
+        <TextView
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="@color/results_color"
+            android:text="Touch something to inspect"
+            android:id="@+id/results"
+            android:ellipsize="none"
+            android:scrollbars="none"
+            android:singleLine="true"
             android:layout_gravity="center"
-            android:scrollbars="none">
-            <TextView
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:scrollHorizontally="true"
-                android:textColor="@color/results_color"
-                android:text="Touch something to inspect"
-                android:id="@+id/results"
-                android:gravity="center_horizontal" />
+            android:maxWidth="275dp" />
 
-        </HorizontalScrollView>
 
     </FrameLayout>
 

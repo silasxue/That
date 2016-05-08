@@ -49,14 +49,17 @@ import android.os.HandlerThread;
 import android.support.annotation.NonNull;
 import android.support.v13.app.FragmentCompat;
 import android.support.v4.content.ContextCompat;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -94,7 +97,7 @@ public class CameraFragment extends Fragment
      */
     private static View inflatedView;
     /**
-     * TextView for the results
+     * Text area for the results
      */
     private static TextView results_id;
 
@@ -448,6 +451,7 @@ public class CameraFragment extends Fragment
                              Bundle savedInstanceState) {
         inflatedView = inflater.inflate(R.layout.fragment_camera, container,false);
         results_id = (TextView) inflatedView.findViewById(R.id.results);
+        results_id.setMovementMethod(new ScrollingMovementMethod());
         return inflatedView;
     }
 
@@ -910,6 +914,7 @@ public class CameraFragment extends Fragment
                 @Override
                 public void run() {
                     results_id.setText(R.string.camera_press);
+                    results_id.scrollTo(0,0);
                 }
             });
         }
@@ -950,7 +955,7 @@ public class CameraFragment extends Fragment
 
             if (clarifaiResults != null) {
                 if (clarifaiResults.getStatusCode() == RecognitionResult.StatusCode.OK) {
-                    // Display the list of tags in the UI.
+                    // Display the list of tags
                     final StringBuilder listResults = new StringBuilder();
                     for (Tag tag : clarifaiResults.getTags()) {
                         listResults.append(listResults.length() > 0 ? ", " : "").append(tag.getName());
@@ -961,6 +966,7 @@ public class CameraFragment extends Fragment
                             @Override
                             public void run() {
                                 results_id.setText(listResults);
+                                results_id.scrollTo(0,0);
                             }
                         });
                     }
