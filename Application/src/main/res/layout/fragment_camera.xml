@@ -44,7 +44,9 @@
             android:scrollbars="none"
             android:singleLine="true"
             android:layout_gravity="center"
-            android:maxWidth="275dp" />
+            android:maxWidth="275dp"
+            android:requiresFadingEdge="horizontal"
+            android:fadingEdgeLength="20dp" />
 
 
     </FrameLayout>
