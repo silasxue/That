@@ -79,6 +79,7 @@ import com.clarifai.api.ClarifaiClient;
 import com.clarifai.api.RecognitionRequest;
 import com.clarifai.api.RecognitionResult;
 import com.clarifai.api.Tag;
+import com.wang.avi.AVLoadingIndicatorView;
 
 public class CameraFragment extends Fragment
         implements View.OnClickListener, FragmentCompat.OnRequestPermissionsResultCallback {
@@ -100,6 +101,12 @@ public class CameraFragment extends Fragment
      * Text area for the results
      */
     private static TextView results_id;
+
+    /**
+     * For the loading animation
+     */
+    private static AVLoadingIndicatorView loading_view;
+
 
     /**
      * Conversion from screen rotation to JPEG orientation.
@@ -452,6 +459,7 @@ public class CameraFragment extends Fragment
         inflatedView = inflater.inflate(R.layout.fragment_camera, container,false);
         results_id = (TextView) inflatedView.findViewById(R.id.results);
         results_id.setMovementMethod(new ScrollingMovementMethod());
+        loading_view = (AVLoadingIndicatorView) inflatedView.findViewById(R.id.avloadingIndicatorView);
         return inflatedView;
     }
 
@@ -915,6 +923,7 @@ public class CameraFragment extends Fragment
                 public void run() {
                     results_id.setText(R.string.camera_press);
                     results_id.scrollTo(0,0);
+                    loading_view.setVisibility(View.VISIBLE);
                 }
             });
         }
@@ -965,6 +974,7 @@ public class CameraFragment extends Fragment
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
+                                loading_view.setVisibility(View.GONE);
                                 results_id.setText(listResults);
                                 results_id.scrollTo(0,0);
                             }
@@ -1013,13 +1023,6 @@ public class CameraFragment extends Fragment
         client_id = getString(R.string.CLIENT_ID);
         client_secret = getString(R.string.CLIENT_SECRET);
         client = new ClarifaiClient(client_id, client_secret);
-    }
-
-    /**
-     * Display Clarifai results
-     */
-    private void displayResults(){
-
     }
 
     /**
